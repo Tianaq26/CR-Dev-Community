@@ -10,6 +10,7 @@ import './styles/glass.css'
 import './styles/layout.css'
 import './styles/features.css'
 import { AuthProvider } from './auth/AuthContext'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { ToastProvider } from './components/Toast'
 import { ApiError } from './lib/api'
 import App from './App'
@@ -31,7 +32,9 @@ createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <ToastProvider>
           <AuthProvider>
-            <App />
+            <ErrorBoundary>
+              <App />
+            </ErrorBoundary>
           </AuthProvider>
         </ToastProvider>
       </QueryClientProvider>

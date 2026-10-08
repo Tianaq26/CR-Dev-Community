@@ -4,6 +4,7 @@ import { Home, Inbox, Lightbulb, LogOut, Plus, UserRound, Users } from 'lucide-r
 import { useAuth } from '../auth/AuthContext'
 import { useInboxCount } from '../hooks/queries'
 import { Avatar } from './Avatar'
+import { ErrorBoundary } from './ErrorBoundary'
 import { Loading } from './states'
 
 function Brand() {
@@ -154,7 +155,11 @@ function TabBar() {
 
 export function AppLayout() {
   const location = useLocation()
-  useEffect(() => window.scrollTo({ top: 0 }), [location.pathname])
+  // Block body on purpose: newer browsers return a Promise from scrollTo, and an effect
+  // must never return anything but a cleanup function.
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [location.pathname])
 
   return (
     <div className="app">
@@ -168,7 +173,10 @@ export function AppLayout() {
       </div>
       <TopBar />
       <main id="contenido" className="page-shell">
-        <Outlet />
+        {/* keyed by path: a crash in one screen is cleared as soon as you navigate elsewhere */}
+        <ErrorBoundary key={location.pathname}>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <footer className="footer">
         <div className="ornament" aria-hidden="true">
