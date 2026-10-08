@@ -15,7 +15,8 @@ public sealed class MetaController(AppDbContext db) : ApiControllerBase
 {
     private static readonly SkillGroup[] Catalog =
     [
-        new("Tecnología", ["Frontend", "Backend", "Full Stack", "Móvil", "Videojuegos", "Datos", "Inteligencia artificial", "DevOps", "Ciberseguridad", "QA / Pruebas", "Hardware / IoT"]),
+        new("Tecnología", ["Frontend", "Backend", "Full Stack", "Móvil", "Datos", "Inteligencia artificial", "DevOps", "Ciberseguridad", "QA / Pruebas", "Hardware / IoT"]),
+        new("Videojuegos", ["Videojuegos", "Game design", "Unity", "Godot", "Unreal Engine", "Pixel art", "Arte 2D"]),
         new("Diseño y arte", ["Diseño UI/UX", "Diseño gráfico", "Ilustración", "Animación", "Modelado 3D", "Fotografía", "Edición de video"]),
         new("Música y audio", ["Músico", "Composición", "Producción musical", "Diseño de sonido", "Locución"]),
         new("Contenido y negocio", ["Redacción", "Guion", "Traducción", "Marketing", "Gestión de proyectos", "Comunidad", "Finanzas", "Legal"]),
