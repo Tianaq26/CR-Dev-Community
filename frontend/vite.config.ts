@@ -11,7 +11,7 @@ function siteUrl(): string {
   if (explicit) return explicit.replace(/\/$/, '')
   const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL
   if (vercel) return `https://${vercel}`
-  return 'https://cr-dev-community-frontend-black.vercel.app'
+  return 'https://cr-dev-community-frontend.vercel.app'
 }
 
 const siteUrlPlugin: Plugin = {

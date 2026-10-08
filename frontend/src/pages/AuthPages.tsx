@@ -111,6 +111,9 @@ export function RegisterPage() {
       <div className="auth__card glass glass--dense">
         <p className="eyebrow">Únete a la comunidad</p>
         <h1>Crear cuenta</h1>
+        <p className="muted" style={{ marginTop: '0.6rem' }}>
+          Cuéntanos qué sabes hacer y te mostramos los proyectos que te necesitan.
+        </p>
         <form onSubmit={onSubmit} className="form-grid" style={{ marginTop: '1.4rem' }}>
           {error && (
             <div className="form-error" role="alert">

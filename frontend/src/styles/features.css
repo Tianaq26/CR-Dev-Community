@@ -1067,3 +1067,12 @@
     transform: translateY(10px);
   }
 }
+
+/* Landing: closing call to action */
+.final-cta {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  margin-top: 4rem;
+  text-align: center;
+}

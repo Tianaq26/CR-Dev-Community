@@ -139,17 +139,18 @@ export default function Landing() {
           <p className="eyebrow">Comunidad de gente que hace cosas</p>
           <h1>Cada proyecto necesita a alguien como tú.</h1>
           <p className="lede">
-            Publica lo que estás construyendo y cuenta qué perfiles buscas: un músico, una ilustradora, alguien que sepa
-            de bases de datos. Si tienes esa habilidad, el proyecto te encuentra a ti.
+            Muchos proyectos se frenan por falta de una persona: quien dibuje, componga o programe. Aquí los publicas,
+            dices a quién buscas y la gente con esa habilidad te encuentra.
           </p>
           <div className="row" style={{ gap: '0.8rem', marginTop: '0.4rem' }}>
             <Link to="/register" className="btn btn--primary btn--lg">
-              Crear mi cuenta <ArrowRight size={18} />
+              Crear mi cuenta gratis <ArrowRight size={18} />
             </Link>
             <Link to="/login" className="btn btn--glass btn--lg">
               Ya tengo cuenta
             </Link>
           </div>
+          <p className="faint small">Gratis · Solo necesitas un correo · Te toma un minuto</p>
         </div>
         <MatchIllustration />
       </section>
@@ -210,7 +211,7 @@ export default function Landing() {
         </ul>
       </section>
 
-      {stats && stats.members > 0 && (
+      {stats && stats.members >= 10 && (
         <section className="stats" aria-label="La comunidad en números">
           <div>
             <strong>{stats.members}</strong>
@@ -226,6 +227,14 @@ export default function Landing() {
           </div>
         </section>
       )}
+
+      <section className="final-cta">
+        <h2>Empieza contando qué sabes hacer.</h2>
+        <p className="muted">Con tus habilidades en el perfil, los proyectos que te necesitan te aparecen primero.</p>
+        <Link to="/register" className="btn btn--primary btn--lg">
+          Crear mi cuenta gratis <ArrowRight size={18} />
+        </Link>
+      </section>
     </div>
   )
 }
