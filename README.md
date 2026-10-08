@@ -32,7 +32,28 @@ docs/DESPLIEGUE.md     publicar gratis + dominio, paso a paso
 render.yaml  docker-compose.yml  .github/workflows/ci.yml
 ```
 
+## Capturas
+
+| Tablero («Para ti») | Proyecto y puestos |
+| --- | --- |
+| ![Tablero](docs/capturas/tablero.jpg) | ![Proyecto](docs/capturas/proyecto.jpg) |
+| **Ideas** | **Bandeja** |
+| ![Ideas](docs/capturas/ideas.jpg) | ![Bandeja](docs/capturas/bandeja.jpg) |
+
 ## Probarlo en local
+
+### Opción A: solo con Docker (un comando)
+
+Necesitas [Docker Desktop](https://www.docker.com/products/docker-desktop/) y nada más.
+
+```bash
+docker compose up --build
+```
+
+Abre <http://localhost:8080>. Levanta PostgreSQL, la API y la web con datos de demostración
+(`demo@crdev.community` / `demo1234`). Para borrar todo y empezar de cero: `docker compose down -v`.
+
+### Opción B: desde el código
 
 Necesitas [.NET 10 SDK](https://dotnet.microsoft.com/download) y Node 22+.
 
@@ -51,7 +72,7 @@ Abre <http://localhost:5173> y pulsa **«Mirar con la cuenta de demostración»*
 `demo@crdev.community` / `demo1234` (Mateo, músico: verás proyectos que buscan músicos).
 Las otras personas de la demo no tienen contraseña conocida; crea tu propia cuenta para jugar con dos perfiles a la vez.
 
-Para probar contra PostgreSQL como en producción: `docker compose up -d` y arranca la API con
+Para probar contra PostgreSQL como en producción: `docker compose up -d db` y arranca la API con
 `DATABASE_URL=postgresql://crdev:crdev@localhost:5432/crdev`.
 Documentación interactiva de la API (solo en desarrollo): <http://localhost:5080/openapi/v1.json>.
 

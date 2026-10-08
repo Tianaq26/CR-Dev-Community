@@ -1,6 +1,8 @@
-# Optional: a local PostgreSQL that behaves like production.
-#   docker compose up -d
-#   DATABASE_URL=postgresql://crdev:crdev@localhost:5432/crdev dotnet run --project backend/src/CrDev.Api
+# Whole app with one command (only Docker needed):
+#   docker compose up --build
+# then open http://localhost:8080  (demo login: demo@crdev.community / demo1234)
+#
+# Data lives in the "crdev-data" volume. Start from scratch with:  docker compose down -v
 services:
   db:
     image: postgres:16-alpine
@@ -9,8 +11,34 @@ services:
       POSTGRES_PASSWORD: crdev
       POSTGRES_DB: crdev
     ports:
-      - "5432:5432"
+      - "5432:5432" # also lets you run the API from source: DATABASE_URL=postgresql://crdev:crdev@localhost:5432/crdev
     volumes:
       - crdev-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crdev -d crdev"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgresql://crdev:crdev@db:5432/crdev?sslmode=disable
+      # Local-only values. Real deployments must set their own secret (see docs/DESPLIEGUE.md).
+      JWT_SECRET: local-only-secret-do-not-use-in-production-0123456789
+      CORS_ORIGINS: http://localhost:8080
+      SEED_DEMO: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
 volumes:
   crdev-data:
