@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { inject } from '@vercel/analytics'
 import '@fontsource-variable/fraunces/full.css'
 import '@fontsource-variable/lora/index.css'
 import './styles/tokens.css'
@@ -14,6 +15,10 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { ToastProvider } from './components/Toast'
 import { ApiError } from './lib/api'
 import App from './App'
+
+// Visit counter from Vercel (no cookies, no personal data). It stays silent until Analytics is switched on in the
+// Vercel dashboard, and does nothing when running locally.
+inject()
 
 const queryClient = new QueryClient({
   defaultOptions: {

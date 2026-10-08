@@ -126,3 +126,27 @@ Existen subdominios gratuitos para desarrolladores (por ejemplo `is-a.dev`, que 
 | La primera carga tarda ~1 minuto | La API gratuita estaba dormida; es normal en Render gratis. |
 | Las imágenes no se ven | `VITE_API_URL` no apunta a la API (las imágenes se sirven desde ella). |
 | Recargar `/projects/…` da 404 en Vercel | Falta `vercel.json` o el *Root Directory* no es `frontend`. |
+
+## 9. Ver la analítica
+
+- **Cuántas personas hay:** abre `https://TU-API.onrender.com/api/stats` (campos `members`, `projects`, `ideas`).
+- **Visitas:** en Vercel, ve a tu proyecto → pestaña **Analytics** → **Enable**. Cuenta visitantes, páginas y países sin cookies. El código ya envía los datos; solo hay que activarlo (los datos aparecen desde que lo activas).
+- **Qué hace la gente:** en Neon → **SQL Editor** (solo lectura; el correo de cada persona está en la tabla `Users`, trátalo con cuidado):
+  ```sql
+  -- Resumen
+  SELECT (SELECT count(*) FROM "Users") AS personas, (SELECT count(*) FROM "Projects") AS proyectos,
+         (SELECT count(*) FROM "Ideas") AS ideas, (SELECT count(*) FROM "JoinRequests") AS solicitudes,
+         (SELECT count(*) FROM "Friendships" WHERE "Status" = 'Accepted') AS amistades;
+
+  -- Registros por día
+  SELECT "CreatedAt"::date AS dia, count(*) AS registros FROM "Users" GROUP BY 1 ORDER BY 1 DESC;
+
+  -- Habilidades más comunes y más buscadas
+  SELECT "Name", count(*) AS personas FROM "UserSkills" GROUP BY "Name" ORDER BY 2 DESC LIMIT 15;
+  SELECT "SkillName", count(*) AS puestos_abiertos FROM "ProjectRoles" WHERE "IsOpen" GROUP BY 1 ORDER BY 2 DESC;
+
+  -- Personas que se registraron pero no pusieron habilidades / no publicaron nada
+  SELECT count(*) FROM "Users" u WHERE NOT EXISTS (SELECT 1 FROM "UserSkills" s WHERE s."UserId" = u."Id");
+  SELECT count(*) FROM "Users" u WHERE NOT EXISTS (SELECT 1 FROM "Projects" p WHERE p."OwnerId" = u."Id")
+                                   AND NOT EXISTS (SELECT 1 FROM "Ideas" i WHERE i."AuthorId" = u."Id");
+  ```
