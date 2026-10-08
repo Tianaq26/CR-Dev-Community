@@ -1,0 +1,20 @@
+# .NET
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.vs/
+*.user
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Env & local
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log

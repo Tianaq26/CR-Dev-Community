@@ -1,0 +1,46 @@
+/* Design tokens — warm paper, wood and clay. Nothing here is cold, neon or purple on purpose. */
+:root {
+  /* paper & kraft */
+  --paper-50: #fcf7ee;
+  --paper-100: #f7eedd;
+  --paper-200: #efe1c8;
+  --paper-300: #e4d0ac;
+  --paper-400: #d4b98e;
+
+  /* wood */
+  --tan-500: #b99668;
+  --wood-600: #8f6a45;
+  --walnut-700: #6b4830;
+  --espresso-800: #47301f;
+  --ink-900: #2c1d12;
+
+  /* clay, moss, ochre — the only accents */
+  --rust-400: #c46f45;
+  --rust-500: #b05a31;
+  --rust-600: #9a4b28;
+  --rust-700: #7f3c20;
+  --moss-500: #7b8650;
+  --moss-600: #5f6b3a;
+  --ochre-300: #e8c677;
+  --ochre-400: #d6a548;
+  --ochre-500: #b9821f;
+  --brick-600: #a3402f;
+
+  --text: var(--ink-900);
+  --text-muted: #6a5340;
+  --text-faint: #7d6450;
+  --on-accent: #fff6e6;
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Lora Variable', Georgia, 'Times New Roman', serif;
+
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nav-h: 64px;
+  --page-w: 1140px;
+}

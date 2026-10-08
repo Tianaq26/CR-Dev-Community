@@ -1,0 +1,16 @@
+# Optional: a local PostgreSQL that behaves like production.
+#   docker compose up -d
+#   DATABASE_URL=postgresql://crdev:crdev@localhost:5432/crdev dotnet run --project backend/src/CrDev.Api
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: crdev
+      POSTGRES_PASSWORD: crdev
+      POSTGRES_DB: crdev
+    ports:
+      - "5432:5432"
+    volumes:
+      - crdev-data:/var/lib/postgresql/data
+volumes:
+  crdev-data:
