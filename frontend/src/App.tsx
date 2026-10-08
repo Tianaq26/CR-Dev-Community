@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './auth/AuthContext'
 import { AppLayout, RequireAuth } from './components/Layout'
-import { Loading } from './components/states'
+import { ConnectionProblem, Loading } from './components/states'
 import Landing from './pages/Landing'
 import { LoginPage, RegisterPage } from './pages/AuthPages'
 import FeedPage from './pages/Feed'
@@ -19,8 +19,9 @@ const ProfileEditPage = lazy(() => import('./pages/ProfileEdit'))
 const InboxPage = lazy(() => import('./pages/Inbox'))
 
 function Home() {
-  const { user, ready } = useAuth()
+  const { user, ready, offline, retry } = useAuth()
   if (!ready) return <Loading />
+  if (offline) return <ConnectionProblem onRetry={retry} />
   return user ? <Navigate to="/feed" replace /> : <Landing />
 }
 

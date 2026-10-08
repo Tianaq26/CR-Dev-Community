@@ -5,7 +5,7 @@ import { useAuth } from '../auth/AuthContext'
 import { useInboxCount } from '../hooks/queries'
 import { Avatar } from './Avatar'
 import { ErrorBoundary } from './ErrorBoundary'
-import { Loading } from './states'
+import { ConnectionProblem, Loading } from './states'
 
 function Brand() {
   return (
@@ -191,9 +191,10 @@ export function AppLayout() {
 
 /** Wraps the pages that need a session; sends visitors to log in and brings them back afterwards. */
 export function RequireAuth() {
-  const { user, ready } = useAuth()
+  const { user, ready, offline, retry } = useAuth()
   const location = useLocation()
   if (!ready) return <Loading label="Entrando…" />
+  if (offline) return <ConnectionProblem onRetry={retry} />
   if (!user) return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />
   return <Outlet />
 }

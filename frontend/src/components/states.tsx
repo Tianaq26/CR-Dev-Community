@@ -62,3 +62,15 @@ export function LoadMore({ hasMore, loading, onClick }: { hasMore: boolean; load
     </div>
   )
 }
+
+/** Shown when a saved session could not be checked because the server is unreachable. The session is not lost. */
+export function ConnectionProblem({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="page page--narrow">
+      <ErrorNote
+        error={new Error('No pudimos conectar con el servidor. Tu sesión sigue guardada: en cuanto responda, entrarás sola.')}
+        onRetry={onRetry}
+      />
+    </div>
+  )
+}
