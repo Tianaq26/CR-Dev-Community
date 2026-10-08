@@ -7,6 +7,7 @@ import { Avatar } from '../components/Avatar'
 import { MediaGallery } from '../components/MediaGallery'
 import { Modal } from '../components/Modal'
 import { RelationshipButton } from '../components/RelationshipButton'
+import { ShareButton } from '../components/ShareButton'
 import { SkillChips } from '../components/SkillChips'
 import { StatusStamp } from '../components/Cards'
 import { ErrorNote, Loading } from '../components/states'
@@ -274,21 +275,24 @@ export default function ProjectDetailPage() {
       <header className="project-head glass">
         <div className="row row--between" style={{ alignItems: 'flex-start' }}>
           <StatusStamp status={project.status} />
-          {project.isOwner && (
-            <div className="row" style={{ gap: '0.5rem' }}>
-              <Link to={`/projects/${project.id}/edit`} className="btn btn--glass btn--sm">
-                <Pencil size={15} /> Editar
-              </Link>
-              <button
-                type="button"
-                className="btn btn--danger btn--sm"
-                disabled={remove.isPending}
-                onClick={() => window.confirm('¿Eliminar este proyecto? Se borrarán también sus solicitudes. No se puede deshacer.') && remove.mutate()}
-              >
-                <Trash2 size={15} /> Eliminar
-              </button>
-            </div>
-          )}
+          <div className="row" style={{ gap: '0.5rem' }}>
+            <ShareButton path={`/projects/${project.id}`} title={project.title} text={project.summary} />
+            {project.isOwner && (
+              <>
+                <Link to={`/projects/${project.id}/edit`} className="btn btn--glass btn--sm">
+                  <Pencil size={15} /> Editar
+                </Link>
+                <button
+                  type="button"
+                  className="btn btn--danger btn--sm"
+                  disabled={remove.isPending}
+                  onClick={() => window.confirm('¿Eliminar este proyecto? Se borrarán también sus solicitudes. No se puede deshacer.') && remove.mutate()}
+                >
+                  <Trash2 size={15} /> Eliminar
+                </button>
+              </>
+            )}
+          </div>
         </div>
         <h1>{project.title}</h1>
         <p className="lede">{project.summary}</p>

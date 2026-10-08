@@ -48,7 +48,7 @@ openssl rand -base64 48
 2. Te pedirá dos valores:
    - `DATABASE_URL` → la cadena de Neon.
    - `CORS_ORIGINS` → por ahora pon `http://localhost:5173` (lo corriges en el paso 5).
-   (`JWT_SECRET` lo genera Render solo; `SEED_DEMO=true` carga la comunidad de demostración.)
+   (`JWT_SECRET` lo genera Render solo. `SEED_DEMO` viene en `false`: ponlo en `true` solo si quieres cargar la comunidad de demostración para una primera prueba.)
 3. Cuando termine, copia la URL pública, tipo `https://crdev-api.onrender.com`.
 4. Comprueba que `https://crdev-api.onrender.com/health` responde `{"status":"ok"}`.
 
@@ -56,7 +56,7 @@ openssl rand -base64 48
 
 1. <https://railway.com> → **New Project → Deploy from GitHub repo**.
 2. En el servicio: **Settings → Root Directory = `backend`** (Railway usará `railway.json` y el `Dockerfile`).
-3. **Variables**: `JWT_SECRET`, `DATABASE_URL` (Neon, o añade un Postgres de Railway con **+ New → Database → PostgreSQL** y usa su variable), `CORS_ORIGINS`, `SEED_DEMO=true`.
+3. **Variables**: `JWT_SECRET`, `DATABASE_URL` (Neon, o añade un Postgres de Railway con **+ New → Database → PostgreSQL** y usa su variable), `CORS_ORIGINS` y, solo para una primera prueba con datos de ejemplo, `SEED_DEMO=true`.
 4. **Settings → Networking → Generate Domain** y comprueba `/health`.
 
 ## 4. El frontend en Vercel
@@ -65,7 +65,7 @@ openssl rand -base64 48
 2. **Root Directory = `frontend`**. Vercel detecta Vite (el `vercel.json` ya incluye la reescritura para que las rutas como `/projects/…` funcionen al recargar).
 3. **Environment Variables**:
    - `VITE_API_URL` = la URL de la API del paso 3 (sin `/` final).
-   - `VITE_DEMO_LOGIN` = `true` mientras uses `SEED_DEMO=true` (muestra el botón de la cuenta de demostración).
+   - `VITE_DEMO_LOGIN` = `true` solo mientras uses `SEED_DEMO=true` (muestra el botón de la cuenta de demostración). Para una publicación real, no la crees.
 4. **Deploy**. Obtendrás `https://tu-proyecto.vercel.app` (puedes cambiar el nombre en *Settings → General* para elegir el subdominio).
 
 ## 5. Conectarlos (CORS)
@@ -78,14 +78,23 @@ https://tu-proyecto.vercel.app,https://*.vercel.app
 
 (El segundo valor permite también las vistas previas de Vercel.) Guarda; la API se reinicia sola. Abre tu sitio y prueba: crear cuenta, publicar un proyecto con imagen, entrar con otra cuenta y ver el emparejamiento.
 
-## 6. Antes de invitar gente de verdad
+## 6. Pasar de la demo a la publicación real
 
-- La **cuenta demo tiene contraseña pública** (`demo1234`). Cuando dejes de necesitarla: pon `SEED_DEMO=false`, `VITE_DEMO_LOGIN=false` y vacía la base para quitar los datos de ejemplo. En Neon (SQL Editor):
-  ```sql
-  DROP SCHEMA public CASCADE; CREATE SCHEMA public;
-  ```
-  y reinicia la API (recrea las tablas vacías). La demo solo se carga cuando la base está vacía.
-- Aviso de privacidad y términos: no hay todavía; si recoges correos de personas reales, conviene tenerlos.
+Hazlo antes de compartir el enlace con gente. La cuenta demo tiene la contraseña pública (`demo1234`).
+
+1. **Neon → SQL Editor**: borra los datos de ejemplo (y cualquier cuenta de prueba) ejecutando:
+   ```sql
+   DROP SCHEMA public CASCADE; CREATE SCHEMA public;
+   ```
+2. **Render → crdev-api → Environment**: `SEED_DEMO` debe estar en `false` (o sin definir). Luego **Manual Deploy → Deploy latest commit**; al arrancar vuelve a crear las tablas, ahora vacías.
+3. **Vercel → Settings → Environment Variables**: borra `VITE_DEMO_LOGIN` (o ponla en `false`) y haz **Deployments → ⋯ → Redeploy**. Las variables `VITE_…` se aplican al construir, por eso hace falta redesplegar.
+4. **Render → Environment → `CORS_ORIGINS`**: deja solo tu dirección exacta, por ejemplo `https://tu-proyecto.vercel.app` (y luego la de tu dominio propio, si lo conectas).
+5. Crea **tu propia cuenta** en el sitio: será la primera persona de la comunidad.
+
+Detalles a tener en cuenta:
+- El correo solo sirve para entrar; no se muestra a otras personas.
+- Todavía no hay aviso de privacidad ni términos; si vas a recoger correos de mucha gente, conviene tenerlos.
+- Con la base vacía la portada oculta los contadores y las pantallas muestran mensajes de «aún no hay…»: es normal.
 
 ## 7. Dominio propio
 

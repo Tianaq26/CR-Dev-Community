@@ -133,6 +133,9 @@ export function RegisterPage() {
           <button className="btn btn--primary btn--lg btn--block" disabled={busy}>
             {busy ? 'Creando…' : 'Crear mi cuenta'}
           </button>
+          <p className="field__hint" style={{ textAlign: 'center' }}>
+            Tu correo solo sirve para entrar: no se muestra en tu perfil ni a otras personas.
+          </p>
         </form>
         <p className="auth__alt">
           ¿Ya tienes cuenta? <Link to="/login">Entra aquí</Link>

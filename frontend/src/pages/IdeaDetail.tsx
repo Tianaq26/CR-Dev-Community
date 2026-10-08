@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft, Hammer, HandHeart, Heart, MessageCircle, Pencil, Send, Trash2 } from 'lucide-react'
 import { Avatar } from '../components/Avatar'
 import { IdeaForm } from '../components/IdeaForm'
+import { ShareButton } from '../components/ShareButton'
 import { SkillChips } from '../components/SkillChips'
 import { ErrorNote, Loading } from '../components/states'
 import { useToast } from '../components/Toast'
@@ -151,11 +152,14 @@ export default function IdeaDetailPage() {
               <button type="button" className={`pill-btn ${idea.interested ? 'is-on' : ''}`} aria-pressed={idea.interested} onClick={() => interest.mutate()} disabled={interest.isPending}>
                 <Heart size={16} fill={idea.interested ? 'currentColor' : 'none'} /> Me interesa · {idea.interest}
               </button>
-              {idea.isOwner && (
-                <Link to={`/projects/new?fromIdea=${idea.id}`} className="btn btn--primary btn--sm">
-                  <Hammer size={15} /> Convertir en proyecto
-                </Link>
-              )}
+              <div className="row" style={{ gap: '0.5rem' }}>
+                <ShareButton path={`/ideas/${idea.id}`} title={idea.title} />
+                {idea.isOwner && (
+                  <Link to={`/projects/new?fromIdea=${idea.id}`} className="btn btn--primary btn--sm">
+                    <Hammer size={15} /> Convertir en proyecto
+                  </Link>
+                )}
+              </div>
             </footer>
           </>
         )}

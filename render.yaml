@@ -16,5 +16,6 @@ services:
         sync: false
       - key: CORS_ORIGINS
         sync: false
+      # "true" loads a demo community on an EMPTY database (public demo password!). Keep it "false" for real use.
       - key: SEED_DEMO
-        value: "true"
+        value: "false"

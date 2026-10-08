@@ -1,39 +1,127 @@
+import { useEffect, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, HandHeart, Lightbulb, MessageCircle, Sparkles } from 'lucide-react'
+import { Tabs } from '../components/Tabs'
 import { useStats } from '../hooks/queries'
 
+interface Example {
+  key: string
+  tab: string
+  project: { stamp: string; title: string; text: string; roles: { skill: string; match: boolean }[] }
+  person: { initials: string; color: string; name: string; headline: string; skills: { skill: string; match: boolean }[] }
+}
+
+const EXAMPLES: Example[] = [
+  {
+    key: 'libro',
+    tab: 'Libro ilustrado',
+    project: {
+      stamp: 'En desarrollo',
+      title: 'Cuentos del Cafetal',
+      text: 'Libro ilustrado e interactivo con relatos orales de familias cafetaleras.',
+      roles: [
+        { skill: 'Músico', match: true },
+        { skill: 'Frontend', match: false },
+      ],
+    },
+    person: {
+      initials: 'MS',
+      color: '#8f6a45',
+      name: 'Mateo Salazar',
+      headline: 'Músico y productor',
+      skills: [
+        { skill: 'Músico', match: true },
+        { skill: 'Composición', match: false },
+      ],
+    },
+  },
+  {
+    key: 'juego',
+    tab: 'Videojuego',
+    project: {
+      stamp: 'En desarrollo',
+      title: 'Chucho en la Cuadra',
+      text: 'Juego de plataformas en 2D: un perro callejero recorre su cuadra buscando a su dueña. Hay tres niveles listos; faltan los fondos y la música.',
+      roles: [
+        { skill: 'Ilustración', match: true },
+        { skill: 'Músico', match: false },
+      ],
+    },
+    person: {
+      initials: 'VC',
+      color: '#7b8650',
+      name: 'Valeria Cruz',
+      headline: 'Ilustradora de pixel art',
+      skills: [
+        { skill: 'Ilustración', match: true },
+        { skill: 'Animación', match: false },
+      ],
+    },
+  },
+]
+
+const ROTATE_MS = 7000
+
+/** Two sample matches, one at a time. They rotate by themselves until the visitor picks one. */
 function MatchIllustration() {
+  const [index, setIndex] = useState(0)
+  const [auto, setAuto] = useState(true)
+
+  useEffect(() => {
+    if (!auto || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % EXAMPLES.length), ROTATE_MS)
+    return () => window.clearInterval(id)
+  }, [auto])
+
+  const ex = EXAMPLES[index]
   return (
-    <div className="match-art" aria-hidden="true">
-      <div className="match-art__project glass">
-        <span className="stamp stamp--building">En desarrollo</span>
-        <h3>Cuentos del Cafetal</h3>
-        <p>Libro ilustrado e interactivo con relatos orales de familias cafetaleras.</p>
-        <div className="stack stack--sm">
-          <span className="label-sm">Se busca</span>
-          <div className="chips">
-            <span className="chip chip--match">Músico</span>
-            <span className="chip chip--open">Frontend</span>
+    <div className="match-art-wrap">
+      <Tabs
+        label="Ejemplos de cómo encajan proyectos y personas"
+        value={ex.key}
+        onChange={(key) => {
+          setAuto(false)
+          setIndex(EXAMPLES.findIndex((e) => e.key === key))
+        }}
+        items={EXAMPLES.map((e) => ({ value: e.key, label: e.tab }))}
+      />
+      <div className="match-art" key={ex.key} aria-live="polite">
+        <div className="match-art__project glass">
+          <span className="stamp stamp--building">{ex.project.stamp}</span>
+          <h3>{ex.project.title}</h3>
+          <p>{ex.project.text}</p>
+          <div className="stack stack--sm">
+            <span className="label-sm">Se busca</span>
+            <div className="chips">
+              {ex.project.roles.map((r) => (
+                <span key={r.skill} className={`chip ${r.match ? 'chip--match' : 'chip--open'}`}>
+                  {r.skill}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="match-art__link">
-        <span className="chip chip--match">
-          <Sparkles size={13} /> Encaja
-        </span>
-      </div>
+        <div className="match-art__link">
+          <span className="chip chip--match">
+            <Sparkles size={13} /> Encaja
+          </span>
+        </div>
 
-      <div className="match-art__person glass glass--dense">
-        <span className="avatar avatar--initials" style={{ '--size': '46px', '--bg': '#8f6a45' } as React.CSSProperties}>
-          MS
-        </span>
-        <div>
-          <strong>Mateo Salazar</strong>
-          <p className="small muted">Músico y productor</p>
-          <div className="chips" style={{ marginTop: '0.45rem' }}>
-            <span className="chip chip--match">Músico</span>
-            <span className="chip">Composición</span>
+        <div className="match-art__person glass glass--dense">
+          <span className="avatar avatar--initials" style={{ '--size': '46px', '--bg': ex.person.color } as CSSProperties}>
+            {ex.person.initials}
+          </span>
+          <div>
+            <strong>{ex.person.name}</strong>
+            <p className="small muted">{ex.person.headline}</p>
+            <div className="chips" style={{ marginTop: '0.45rem' }}>
+              {ex.person.skills.map((sk) => (
+                <span key={sk.skill} className={`chip ${sk.match ? 'chip--match' : ''}`}>
+                  {sk.skill}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

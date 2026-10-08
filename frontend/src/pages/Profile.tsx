@@ -3,6 +3,7 @@ import { Briefcase, Calendar, ExternalLink, GraduationCap, Link2, MapPin, Pencil
 import { Avatar } from '../components/Avatar'
 import { IdeaCard, ProjectCard } from '../components/Cards'
 import { RelationshipButton } from '../components/RelationshipButton'
+import { ShareButton } from '../components/ShareButton'
 import { SkillChips } from '../components/SkillChips'
 import { ErrorNote, Loading } from '../components/states'
 import { useIdeas, useProfile, useProjects } from '../hooks/queries'
@@ -50,7 +51,7 @@ export default function ProfilePage() {
             </li>
           </ul>
         </div>
-        <div className="profile-head__actions">
+        <div className="profile-head__actions row" style={{ gap: '0.5rem' }}>
           {isSelf ? (
             <Link to="/me/edit" className="btn btn--glass">
               <Pencil size={16} /> Editar perfil
@@ -58,6 +59,7 @@ export default function ProfilePage() {
           ) : (
             <RelationshipButton userId={profile.id} userName={profile.name} relationship={profile.relationship} size="md" />
           )}
+          <ShareButton path={`/people/${profile.id}`} title={`${profile.name} en CR Dev Community`} text={profile.headline ?? undefined} />
         </div>
         <dl className="profile-head__stats">
           <div>
